@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { buyItem } from "../actions/featureActions";
+import { buyItem, updateTotal } from "../actions/featureActions";
 
 const AdditionalFeature = props => {
   return (
@@ -10,6 +10,7 @@ const AdditionalFeature = props => {
         onClick={e => {
           e.preventDefault();
           props.buyItem(props.feature.id);
+          props.updateTotal();
         }}
         className="button"
       >
@@ -20,4 +21,4 @@ const AdditionalFeature = props => {
   );
 };
 
-export default connect(null, { buyItem })(AdditionalFeature);
+export default connect(null, { buyItem, updateTotal })(AdditionalFeature);

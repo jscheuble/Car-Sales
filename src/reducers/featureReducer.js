@@ -1,4 +1,8 @@
-import { REMOVE_FEATURE, BUY_ITEM } from "../actions/featureActions";
+import {
+  REMOVE_FEATURE,
+  BUY_ITEM,
+  UPDATE_TOTAL
+} from "../actions/featureActions";
 
 export const initialState = {
   additionalPrice: 0,
@@ -25,8 +29,14 @@ export const featureReducer = (state = initialState, action) => {
         ...state,
         car: {
           ...state.car,
-          features: [...state.car.features].concat(
-            state.additionalFeatures.find(car => car.id === action.payload)
+          features: Array.from(
+            new Set(
+              [...state.car.features].concat(
+                state.additionalFeatures.filter(
+                  item => item.id === action.payload
+                )
+              )
+            )
           )
         }
       };
@@ -35,8 +45,15 @@ export const featureReducer = (state = initialState, action) => {
         ...state,
         car: {
           ...state.car,
-          features: state.car.features.filter(car => car.id !== action.payload)
+          features: state.car.features.filter(
+            item => item.id !== action.payload
+          )
         }
+      };
+    case UPDATE_TOTAL:
+      return {
+        ...state,
+        additionalPrice: state.car.features.reduce((a, b) => a + b.price, 0)
       };
     default:
       return state;
